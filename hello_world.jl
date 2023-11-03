@@ -1,6 +1,6 @@
 module BitSift
 
-using Printf
+import Printf
 
 struct SplitMix64 end
 
@@ -11,12 +11,12 @@ function hash(::SplitMix64, key::UInt64)::UInt64
     return xor(x, x >> 31)
 end
 
-
-for i in 0:10
-    Printf.@printf "%#018x: %#018x\n" i hash(SplitMix64(), UInt64(i))
+function main()
+    for i in 0:10
+        Printf.@printf "%#018x: %#018x\n" i hash(SplitMix64(), UInt64(i))
+    end
 end
 
-
-Printf.@printf "%#018x: %#018x\n" 3 hash(AbstractRNG(), UInt64(3))
+@time main()
 
 end  # module BitSift
