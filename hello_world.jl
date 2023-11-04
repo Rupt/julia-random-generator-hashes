@@ -2,6 +2,21 @@ module BitSift
 
 import Printf
 
+function main()
+    for i in 0:10
+        Printf.@printf "%#018x: %#018x\n" i query(SplitMix64(), UInt64(i))
+    end
+    querty_splitmix64(k) = query(SplitMix64(), UInt64(k))
+    println(querty_splitmix64.(0:3))
+    println((k -> query(SplitMix64(), UInt64(k))).(0:3))
+    println(bits(SplitMix64()))
+    println(big_endian_bits(0xff00818283848586))
+end
+
+function big_endian_bits(x::UInt64)::BitVector
+    return BitVector((x >> i) & 1 for i = 63:-1:0)
+end
+
 # Abstract interface
 abstract type AbstractRNG end
 
@@ -21,16 +36,6 @@ end
 
 function bits(::SplitMix64)::BitVector
     return BitVector()
-end
-
-function main()
-    for i in 0:10
-        Printf.@printf "%#018x: %#018x\n" i query(SplitMix64(), UInt64(i))
-    end
-    querty_splitmix64(k) = query(SplitMix64(), UInt64(k))
-    println(querty_splitmix64.(0:3))
-    println((k -> query(SplitMix64(), UInt64(k))).(0:3))
-    println(bits(SplitMix64()))
 end
 
 @time main()
