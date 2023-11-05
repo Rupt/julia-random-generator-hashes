@@ -8,8 +8,9 @@ export query
 export encode
 # Generators
 export Linear
-export MultiplyWithCarry64
+export MultiplyWithCarry
 export SplitMix64
+export XorShift
 
 abstract type AbstractRNG end
 
@@ -17,8 +18,9 @@ function query end
 function encode end
 
 include("tools.jl")
-include("SplitMix64.jl")
 include("Linear.jl")
 include("MultiplyWithCarry.jl")
+include("SplitMix64.jl")
+include("XorShift.jl")
 
 end  # module BitSift

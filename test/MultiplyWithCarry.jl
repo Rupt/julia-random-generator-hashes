@@ -16,7 +16,7 @@ function _ref_kiss_mwc_rng(key::UInt64)::UInt64
     x::UInt64 = 1234567890987654321
     a::UInt64 = UInt64(1) << 58 + 1
     modulus::UInt128 = (UInt128(a) << 64) - 1  # prime
-    rng = MultiplyWithCarry64(modulus, (UInt128(c) << 64) | x)
+    rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
     return query(rng, key)
 end
 
@@ -24,7 +24,7 @@ end
     modulus::UInt128 = 0xffebb71d94fcdaf8ffffffffffffffff
     c::UInt64 = 1
     x::UInt64 = 3141592653589793238
-    rng = MultiplyWithCarry64(modulus, (UInt128(c) << 64) | x)
+    rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
     # Reference: https://godbolt.org/z/WTx4P8fnv
