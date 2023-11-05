@@ -8,7 +8,7 @@ export query
 export encode
 # Generators
 export Linear
-export MultiplyWithCarry
+export MultiplyWithCarry64
 export SplitMix64
 
 abstract type AbstractRNG end

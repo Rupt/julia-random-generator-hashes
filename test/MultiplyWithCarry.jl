@@ -31,7 +31,7 @@ function _ref_kiss_mwc_rng(key::UInt64)::UInt64
     c::UInt64 = 123456123456123456
     a::UInt64 = UInt64(1) << 58 + 1
     modulus::UInt128 = (UInt128(a) << 64) - 1  # prime
-    rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
+    rng = MultiplyWithCarry64(modulus, (UInt128(c) << 64) | x)
     return query(rng, key)
 end
 
