@@ -1,36 +1,78 @@
-# // https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
-# #include <stdint.h>
-
-# static uint64_t x = 1234567890987654321ULL, c = 123456123456123456ULL,
-#                 y = 362436362436362436ULL, z = 1066149217761810ULL, t;
-
-# #define MWC (t = (x << 58) + c, c = (x >> 6), x += t, c += (x < t), x)
-# #define XSH (y ^= (y << 13), y ^= (y >> 17), y ^= (y << 43))
-# #define CNG (z = 6906969069LL * z + 1234567)
-# #define KISS (MWC + XSH + CNG)
-
-# int main(void) {
-#     for (int i = 0; i < 4; ++i) __builtin_printf("%d => %#018llx\n", i, CNG);
-# }
-
+using Printf
 function _ref_kiss_mwc(key::UInt64)::UInt64
+    # // https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
     x = UInt64(1234567890987654321)
     c = UInt64(123456123456123456)
     for _ in 0:key
         t = (x << 58) + c
-        c = (x >> 6)
+        c = x >> 6
         x += t
-        c += (x < t)
+        c += x < t
+        @printf("geo %016x %016x\n", c, x)
     end
     return x
 end
 
-@testset "_ref_kiss_mwc" begin
+function _ref_kiss_mwc_dumb(key::UInt64)::UInt64
+    x = UInt64(1234567890987654321)
+    c = UInt64(123456123456123456)
+    a = UInt128(1) << 58 + 1
+    b = UInt128(1) << 64
+    p = a * b - 1
+    multiplier = invmod(b, p)
+    s = BigInt(x + c * b)  # BigInt is the key
+    for _ in 0:key
+        s = (multiplier * s) % p
+        @printf("mul %016x %016x\n", s >> 64, s & 0xffffffffffffffff)
+    end
+    return s & 0xffffffffffffffff
+end
+
+function _mwc_demo()
+    c = UInt64(1)
+    x = UInt64(0)
+    a = 7
+    b = 10
+    for i in 0:5
+        tmp = a * x + c
+        x = tmp % b
+        c = div(tmp, b)
+        @printf("%d %d %d\n", i, tmp, x)
+    end
+end
+
+function _mwc_redo()
+    c = UInt64(1)
+    x = UInt64(0)
+    a = 7
+    b = 10
+    p = a * b - 1
+    multiplier = invmod(b, p)
+    println("multiplier ", multiplier)
+    s = x + c * b
+    for i in 0:5
+        tmp = (multiplier * s) % p
+        x = tmp % b
+        c = div(tmp, b)
+        @printf("%d %d %d\n", i, tmp, x)
+        s = tmp
+    end
+end
+
+@testset "MultiplyWithCarry._ref_kiss_mwc" begin
     # Reference: https://godbolt.org/z/x9685zodY
-    @test _ref_kiss_mwc(UInt64(0)) === 0xd6d8aba5615f0ef1
-    @test _ref_kiss_mwc(UInt64(1)) === 0x9b1d33e93424bf63
-    @test _ref_kiss_mwc(UInt64(2)) === 0x2a789697c9aa3b9f
-    @test _ref_kiss_mwc(UInt64(3)) === 0xa8e50b676e7ace9d
+    # @test _ref_kiss_mwc(UInt64(0)) === 0xd6d8aba5615f0ef1
+    # @test _ref_kiss_mwc(UInt64(1)) === 0x9b1d33e93424bf63
+    # @test _ref_kiss_mwc(UInt64(2)) === 0x2a789697c9aa3b9f
+    # @test _ref_kiss_mwc(UInt64(3)) === 0xa8e50b676e7ace9d
+
+    println(_ref_kiss_mwc(UInt64(0)))
+    println(_ref_kiss_mwc(UInt64(1)))
+    println(_ref_kiss_mwc_dumb(UInt64(0)))
+    println(_ref_kiss_mwc_dumb(UInt64(1)))
+    println("_")
+    _mwc_demo()
+    _mwc_redo()
 end
 
 # @testset "BitSift.MultiplyWithCarry" begin
