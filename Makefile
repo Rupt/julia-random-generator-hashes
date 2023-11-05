@@ -1,3 +1,3 @@
 .PHONY: hello
-hello: 
-	julia hello_world.jl
+hello:
+	julia -O0 hello_world.jl

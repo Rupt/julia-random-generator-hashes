@@ -1,0 +1,4 @@
+name = "BitSift"
+uuid = "42faf63c-d721-40e7-8175-b035777ce658"
+authors = ["Rupert Tombs <rupert.tombs@gmail.com>"]
+version = "0.0.0"
