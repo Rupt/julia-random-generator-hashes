@@ -6,8 +6,7 @@ struct Linear <: AbstractRNG
 end
 
 function query(rng::Linear, key::UInt64)::UInt64
-    x = rng.increment
-    c = rng.increment
+    c = x = rng.increment
     a = rng.multiplier
     for i in 0:63
         x = Bool((key >> i) & 1) ? a * x + c : x
