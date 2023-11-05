@@ -1,4 +1,3 @@
-using Printf
 function _ref_kiss_mwc(key::UInt64)::UInt64
     # https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
     c::UInt64 = 123456123456123456
@@ -17,15 +16,15 @@ function _ref_kiss_mwc_rng(key::UInt64)::UInt64
     x::UInt64 = 1234567890987654321
     a::UInt64 = UInt64(1) << 58 + 1
     modulus::UInt128 = (UInt128(a) << 64) - 1  # prime
-    rng = MultiplyWithCarry64(modulus, c, x)
+    rng = MultiplyWithCarry64(modulus, (UInt128(c) << 64) | x)
     return query(rng, key)
 end
 
 @testset "BitSift.MultiplyWithCarry" begin
     modulus::UInt128 = 0xffebb71d94fcdaf8ffffffffffffffff
-    seed_c::UInt64 = 1
-    seed_x::UInt64 = 3141592653589793238
-    rng = MultiplyWithCarry64(modulus, seed_c, seed_x)
+    c::UInt64 = 1
+    x::UInt64 = 3141592653589793238
+    rng = MultiplyWithCarry64(modulus, (UInt128(c) << 64) | x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
     # Reference: https://godbolt.org/z/WTx4P8fnv
@@ -45,6 +44,6 @@ end
     code = encode(rng)
     @test length(code) === 256
     @test code[1:128] == encode(modulus)
-    @test code[129:192] == encode(seed_c)
-    @test code[193:256] == encode(seed_x)
+    @test code[129:192] == encode(c)
+    @test code[193:256] == encode(x)
 end
