@@ -6,13 +6,15 @@ export query
 export encode
 # Generators
 export SplitMix64
+export Linear
 
 abstract type AbstractRNG end
 
 function query end
 function encode end
 
-include("SplitMix64.jl")
 include("tools.jl")
+include("SplitMix64.jl")
+include("Linear.jl")
 
 end  # module BitSift
