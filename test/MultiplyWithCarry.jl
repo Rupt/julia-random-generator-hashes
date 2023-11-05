@@ -28,6 +28,11 @@ end
     rng = MultiplyWithCarry64(modulus, seed_c, seed_x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
+    # Reference: https://godbolt.org/z/WTx4P8fnv
+    @test query(rng, UInt64(0)) === 0x2b992ddfa23249d6
+    @test query(rng, UInt64(1)) === 0x8ee32211fc720d27
+    @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
+    @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
     # Reference: https://godbolt.org/z/bsjqW5T1P
     @test _ref_kiss_mwc_rng(UInt64(0)) === 0x112210f4b16c1cb1
     @test _ref_kiss_mwc_rng(UInt64(1)) === 0xd6d8aba5615f0ef1
@@ -36,11 +41,6 @@ end
     for i in UInt64.(0:8)
         @test _ref_kiss_mwc(i) === _ref_kiss_mwc_rng(i)
     end
-    # Reference: https://godbolt.org/z/WTx4P8fnv
-    @test query(rng, UInt64(0)) === 0x2b992ddfa23249d6
-    @test query(rng, UInt64(1)) === 0x8ee32211fc720d27
-    @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
-    @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
     # encode
     code = encode(rng)
     @test length(code) === 256
