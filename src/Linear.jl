@@ -3,11 +3,13 @@
 struct Linear <: AbstractRNG
     multiplier::UInt64
     increment::UInt64
+    seed::UInt64
 end
 
 function query(rng::Linear, key::UInt64)::UInt64
-    x::UInt64 = c::UInt64 = rng.increment
     a::UInt64 = rng.multiplier
+    c::UInt64 = rng.increment
+    x::UInt64 = rng.seed
     for i in 0:63
         x = Bool((key >> i) & 1) ? a * x + c : x
         # Two steps: a * (a * x + c) + c = a * a * x + a * c + c
@@ -18,5 +20,5 @@ function query(rng::Linear, key::UInt64)::UInt64
 end
 
 function encode(rng::Linear)::BitVector
-    return cat(encode(rng.multiplier), encode(rng.increment); dims=1)
+    return cat(encode(rng.multiplier), encode(rng.increment), encode(rng.seed); dims=1)
 end

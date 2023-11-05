@@ -33,7 +33,7 @@ end
     @test query(rng, UInt64(1)) === 0x8ee32211fc720d27
     @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
     @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
-    # Reference: https://godbolt.org/z/bsjqW5T1P
+    # Reference: https://godbolt.org/z/bsjqW5T1P (KISS64)
     @test _ref_kiss_mwc_rng(UInt64(0)) === 0x112210f4b16c1cb1
     @test _ref_kiss_mwc_rng(UInt64(1)) === 0xd6d8aba5615f0ef1
     @test _ref_kiss_mwc_rng(UInt64(2)) === 0x9b1d33e93424bf63
