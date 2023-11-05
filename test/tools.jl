@@ -1,4 +1,4 @@
-@testset "BitSift tools" begin
+@testset "BitSift.encode(::UInt64)" begin
     @test typeof(encode(UInt64(0))) === BitVector
     @test length(encode(UInt64(0))) === 64
     @test encode(UInt64(0b10101))[60:64] == [true, false, true, false, true]
