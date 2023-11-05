@@ -17,3 +17,14 @@ end
         end
     end
 end
+
+@testset "BitSift.multiplicative_inverse" begin
+    for T in [UInt8, UInt16, UInt32, UInt64, UInt128, Int8, Int16, Int32, Int64, Int128]
+        for x in [T(1), typemax(T), T(3), T(57), -T(123)]
+            @test multiplicative_inverse(x) * x === T(1)
+        end
+        for x in [T(0), T(2), -T(2), typemax(T) - 1]
+            @test multiplicative_inverse(T(0)) === T(0)
+        end
+    end
+end

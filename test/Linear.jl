@@ -19,3 +19,6 @@ end
     @test code[1:64] == encode(rng.multiplier)
     @test code[65:128] == encode(rng.increment)
 end
+
+# TODO check against Marsaglia's KISS CNG
+# https://godbolt.org/z/q8djGdx4x
