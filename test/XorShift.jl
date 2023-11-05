@@ -7,9 +7,8 @@ function _ref_query(rng::Linear, key::UInt64)::UInt64
 end
 
 @testset "BitSift.XorShift" begin
-    rng = XorShift()
     # query
-    @test typeof(query(rng, UInt64(0))) === UInt64
+    @test typeof(query(XorShift(), UInt64(0))) === UInt64
     # TODO Reference https://godbolt.org/z/qaqe4e84x
     # y = 362436362436362436ULL  # seed
     # 0 => 0x0507a1f38cb440c4
@@ -17,6 +16,5 @@ end
     # 2 => 0x6cb5f773267910f4
     # 3 => 0x1ecdc291cdb992c7
     # encode
-    code = encode(rng)
-    @test length(code) === 0
+    @test encode(XorShift()) == Bool[]
 end

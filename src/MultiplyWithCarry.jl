@@ -8,7 +8,7 @@ function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
     a::BigInt = invmod(UInt128(1) << 64, m)
     x::BigInt = rng.seed
     for i in 0:63
-        x = Bool((key >> i) & 1) ? (a * x) % m : x
+        x = (key >> i) & 1 == 1 ? (a * x) % m : x
         # Two steps: a * ((a * x) % m) = ((a * a) % m) * x
         a = (a * a) % m
     end

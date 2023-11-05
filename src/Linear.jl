@@ -11,7 +11,7 @@ function query(rng::Linear, key::UInt64)::UInt64
     c::UInt64 = rng.increment
     x::UInt64 = rng.seed
     for i in 0:63
-        x = Bool((key >> i) & 1) ? a * x + c : x
+        x = (key >> i) & 1 == 1 ? a * x + c : x
         # Two steps: a * (a * x + c) + c = a * a * x + a * c + c
         c += a * c
         a *= a
