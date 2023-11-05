@@ -2,7 +2,7 @@
 struct SplitMix64 <: AbstractRNG end
 
 function query(::SplitMix64, key::UInt64)::UInt64
-    x = (key + 1) * 0x9e3779b97f4a7c15
+    x = (key + 1) * 0x9e3779b97f4a7c15  # TODO(Rupt) choose 0 convention (for all rngs)
     x = xor(x, x >> 30) * 0xbf58476d1ce4e5b9
     x = xor(x, x >> 27) * 0x94d049bb133111eb
     return xor(x, x >> 31)
