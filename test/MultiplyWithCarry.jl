@@ -28,7 +28,7 @@ end
     rng = MultiplyWithCarry64(modulus, seed_c, seed_x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
-    # Reference: https://godbolt.org/z/fezcd1rqM
+    # Reference: https://godbolt.org/z/bsjqW5T1P
     @test _ref_kiss_mwc_rng(UInt64(0)) === 0x112210f4b16c1cb1
     @test _ref_kiss_mwc_rng(UInt64(1)) === 0xd6d8aba5615f0ef1
     @test _ref_kiss_mwc_rng(UInt64(2)) === 0x9b1d33e93424bf63

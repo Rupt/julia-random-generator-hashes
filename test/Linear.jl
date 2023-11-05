@@ -21,4 +21,4 @@ end
 end
 
 # TODO check against Marsaglia's KISS CNG
-# https://godbolt.org/z/q8djGdx4x
+# https://godbolt.org/z/9W1EK3d54
