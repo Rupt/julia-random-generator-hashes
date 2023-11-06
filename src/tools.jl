@@ -6,6 +6,6 @@ function encode(key::T)::BitVector where {T<:Integer}
     return BitVector((key >> i) & 1 for i in (length - 1):-1:0)
 end
 
-function encode(item::AbstractHash)::BitVector
+function encode(item::T)::BitVector where {T<:AbstractHash}
     return cat((encode(getfield(item, field)) for field in fieldnames(T))...; dims=1)
 end
