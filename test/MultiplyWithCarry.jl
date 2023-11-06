@@ -14,17 +14,15 @@ end
 function _ref_kiss_mwc_rng(key::UInt64)::UInt64
     c::UInt64 = 123456123456123456
     x::UInt64 = 1234567890987654321
-    a::UInt64 = UInt64(1) << 58 + 1
-    modulus::UInt128 = (UInt128(a) << 64) - 1  # prime
-    rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
+    rng = MultiplyWithCarry(UInt64(1) << 58 + 1, c, x)
     return query(rng, key)
 end
 
 @testset "BitSift.MultiplyWithCarry" begin
-    modulus::UInt128 = 0xffebb71d94fcdaf8ffffffffffffffff
     c::UInt64 = 1
     x::UInt64 = 3141592653589793238
-    rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
+    mwc_a1::UInt64 = 0xffebb71d94fcdaf9
+    rng = MultiplyWithCarry(mwc_a1, c, x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
     # Reference: https://godbolt.org/z/1G89dnvoT
@@ -42,8 +40,8 @@ end
     end
     # encode
     code = encode(rng)
-    @test length(code) === 256
-    @test code[1:128] == encode(modulus)
-    @test code[129:192] == encode(c)
-    @test code[193:256] == encode(x)
+    @test length(code) === 192
+    @test code[1:64] == encode(mwc_a1)
+    @test code[65:128] == encode(c)
+    @test code[129:192] == encode(x)
 end
