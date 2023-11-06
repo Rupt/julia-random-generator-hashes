@@ -15,10 +15,7 @@ abstract type AbstractHash end
 function query end
 function encode end
 
+include("hashes.jl")
 include("tools.jl")
-include("Linear.jl")
-include("MultiplyWithCarry.jl")
-include("SplitMix.jl")
-include("XorShift.jl")
 
 end  # module BitSift
