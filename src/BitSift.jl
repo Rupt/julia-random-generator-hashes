@@ -1,7 +1,5 @@
 module BitSift
 
-# Tools
-export multiplicative_inverse
 # Generator interface
 export AbstractHash
 export query
