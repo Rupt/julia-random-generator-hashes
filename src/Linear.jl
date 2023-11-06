@@ -18,7 +18,3 @@ function query(rng::Linear, key::UInt64)::UInt64
     end
     return x
 end
-
-function encode(rng::Linear)::BitVector
-    return cat(encode(rng.multiplier), encode(rng.increment), encode(rng.seed); dims=1)
-end

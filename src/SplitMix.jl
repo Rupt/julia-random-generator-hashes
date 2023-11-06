@@ -7,7 +7,3 @@ function query(::SplitMix, key::UInt64)::UInt64
     x = xor(x, x >> 27) * 0x94d049bb133111eb
     return xor(x, x >> 31)
 end
-
-function encode(::SplitMix)::BitVector
-    return BitVector()
-end

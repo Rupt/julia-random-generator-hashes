@@ -8,7 +8,3 @@ function query(::XorShift, key::UInt64)::UInt64
     # TODO(Rupt): matrix power operation
     return 0
 end
-
-function encode(::XorShift)::BitVector
-    return BitVector()
-end

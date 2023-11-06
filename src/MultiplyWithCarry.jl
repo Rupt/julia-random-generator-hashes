@@ -15,9 +15,3 @@ function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
     end
     return x & typemax(UInt64)
 end
-
-function encode(rng::MultiplyWithCarry)::BitVector
-    return cat(
-        encode(rng.reduced_multiplier), encode(rng.seed_c), encode(rng.seed_x); dims=1
-    )
-end
