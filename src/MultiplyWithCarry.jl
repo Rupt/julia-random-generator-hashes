@@ -1,4 +1,4 @@
-struct MultiplyWithCarry <: AbstractRNG
+struct MultiplyWithCarry <: AbstractHash
     modulus::UInt128
     seed::UInt128
 end

@@ -1,5 +1,5 @@
 # https://web.archive.org/web/20220617005635/https://prng.di.unimi.it/splitmix64.c
-struct SplitMix64 <: AbstractRNG end
+struct SplitMix64 <: AbstractHash end
 
 function query(::SplitMix64, key::UInt64)::UInt64
     x = key * 0x9e3779b97f4a7c15

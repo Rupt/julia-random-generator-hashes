@@ -1,6 +1,6 @@
 # - Seminumerical Algorithms. The Art of Computer Programming. Vol. 2 (3rd ed.)
 #     3.2.1 The Linear Congruential Method
-struct Linear <: AbstractRNG
+struct Linear <: AbstractHash
     multiplier::UInt64
     increment::UInt64
     seed::UInt64

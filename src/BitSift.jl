@@ -3,7 +3,7 @@ module BitSift
 # Tools
 export multiplicative_inverse
 # Generator interface
-export AbstractRNG
+export AbstractHash
 export query
 export encode
 # Generators
@@ -12,7 +12,7 @@ export MultiplyWithCarry
 export SplitMix64
 export XorShift
 
-abstract type AbstractRNG end
+abstract type AbstractHash end
 
 function query end
 function encode end
