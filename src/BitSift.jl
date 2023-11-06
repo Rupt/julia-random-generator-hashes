@@ -9,7 +9,7 @@ export encode
 # Generators
 export Linear
 export MultiplyWithCarry
-export SplitMix64
+export SplitMix
 export XorShift
 
 abstract type AbstractHash end
@@ -20,7 +20,7 @@ function encode end
 include("tools.jl")
 include("Linear.jl")
 include("MultiplyWithCarry.jl")
-include("SplitMix64.jl")
+include("SplitMix.jl")
 include("XorShift.jl")
 
 end  # module BitSift
