@@ -17,12 +17,12 @@ end
     for i in UInt64.(0:4)
         @test query(rng, i) === _ref_query(rng, UInt64(i))
     end
-    # Reference: https://godbolt.org/z/hqTGP91d3 (KISS64)
+    # Reference: https://godbolt.org/z/avYrzxocq (KISS64)
     kiss_cng = Linear(6906969069, 1234567, 1066149217761810)
-    @test query(kiss_cng, UInt64(0)) === 0x0003c9a83566fa12
     @test query(kiss_cng, UInt64(1)) === 0xa1f271f53fe5ff31
     @test query(kiss_cng, UInt64(2)) === 0x476be49fc6b421e4
     @test query(kiss_cng, UInt64(3)) === 0xb5475749c8ecc29b
+    @test query(kiss_cng, UInt64(4)) === 0xe6a59d970705f906
     # encode
     code = encode(rng)
     @test length(code) === 192

@@ -27,16 +27,16 @@ end
     rng = MultiplyWithCarry(modulus, (UInt128(c) << 64) | x)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
-    # Reference: https://godbolt.org/z/WTx4P8fnv
-    @test query(rng, UInt64(0)) === 0x2b992ddfa23249d6
+    # Reference: https://godbolt.org/z/1G89dnvoT
     @test query(rng, UInt64(1)) === 0x8ee32211fc720d27
     @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
     @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
-    # Reference: https://godbolt.org/z/bsjqW5T1P (KISS64)
-    @test _ref_kiss_mwc_rng(UInt64(0)) === 0x112210f4b16c1cb1
+    @test query(rng, UInt64(4)) === 0x99d4dc2af9055010
+    # Reference: https://godbolt.org/z/dE64vPMWb (KISS64)
     @test _ref_kiss_mwc_rng(UInt64(1)) === 0xd6d8aba5615f0ef1
     @test _ref_kiss_mwc_rng(UInt64(2)) === 0x9b1d33e93424bf63
     @test _ref_kiss_mwc_rng(UInt64(3)) === 0x2a789697c9aa3b9f
+    @test _ref_kiss_mwc_rng(UInt64(4)) === 0xa8e50b676e7ace9d
     for i in UInt64.(0:8)
         @test _ref_kiss_mwc(i) === _ref_kiss_mwc_rng(i)
     end
