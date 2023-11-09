@@ -1,4 +1,4 @@
-function _ref_query(rng::Linear, key::UInt64)::UInt64
+function _query_ref(rng::Linear, key::UInt64)::UInt64
     x = rng.seed
     for _ in 1:key
         x = rng.multiplier * x + rng.increment
@@ -13,9 +13,9 @@ end
     rng = Linear(multiplier, increment, seed)
     # query
     @test typeof(query(rng, UInt64(0))) === UInt64
-    @test query(rng, UInt64(0)) === _ref_query(rng, UInt64(0))
+    @test query(rng, UInt64(0)) === _query_ref(rng, UInt64(0))
     for i in UInt64.(0:4)
-        @test query(rng, i) === _ref_query(rng, UInt64(i))
+        @test query(rng, i) === _query_ref(rng, UInt64(i))
     end
     # Reference: https://godbolt.org/z/avYrzxocq (KISS64)
     kiss_cng = Linear(6906969069, 1234567, 1066149217761810)
@@ -31,7 +31,7 @@ end
     @test code[129:192] == encode(seed)
 end
 
-function _ref_kiss_mwc(key::UInt64)::UInt64
+function _kiss_mwc_ref(key::UInt64)::UInt64
     # https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
     c::UInt64 = 123456123456123456
     x::UInt64 = 1234567890987654321
@@ -44,7 +44,7 @@ function _ref_kiss_mwc(key::UInt64)::UInt64
     return x
 end
 
-function _ref_kiss_mwc_rng(key::UInt64)::UInt64
+function _kiss_mwc_rng_ref(key::UInt64)::UInt64
     c::UInt64 = 123456123456123456
     x::UInt64 = 1234567890987654321
     rng = MultiplyWithCarry(UInt64(1) << 58 + 1, c, x)
@@ -64,12 +64,12 @@ end
     @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
     @test query(rng, UInt64(4)) === 0x99d4dc2af9055010
     # Reference: https://godbolt.org/z/dE64vPMWb (KISS64)
-    @test _ref_kiss_mwc_rng(UInt64(1)) === 0xd6d8aba5615f0ef1
-    @test _ref_kiss_mwc_rng(UInt64(2)) === 0x9b1d33e93424bf63
-    @test _ref_kiss_mwc_rng(UInt64(3)) === 0x2a789697c9aa3b9f
-    @test _ref_kiss_mwc_rng(UInt64(4)) === 0xa8e50b676e7ace9d
+    @test _kiss_mwc_rng_ref(UInt64(1)) === 0xd6d8aba5615f0ef1
+    @test _kiss_mwc_rng_ref(UInt64(2)) === 0x9b1d33e93424bf63
+    @test _kiss_mwc_rng_ref(UInt64(3)) === 0x2a789697c9aa3b9f
+    @test _kiss_mwc_rng_ref(UInt64(4)) === 0xa8e50b676e7ace9d
     for i in UInt64.(0:8)
-        @test _ref_kiss_mwc(i) === _ref_kiss_mwc_rng(i)
+        @test _kiss_mwc_ref(i) === _kiss_mwc_rng_ref(i)
     end
     # encode
     code = encode(rng)
@@ -91,7 +91,7 @@ end
     @test encode(SplitMix()) == Bool[]
 end
 
-function _ref_query(rng::XorShift, key::UInt64)::UInt64
+function _query_ref(rng::XorShift, key::UInt64)::UInt64
     x = rng.seed
     for _ in 1:key
         x = xor(x, x << 13)
@@ -105,10 +105,10 @@ end
     # query
     # Reference https://godbolt.org/z/bPr3vab1s
     rng = XorShift(362436362436362436)
-    @test _ref_query(rng, UInt64(1)) === 0x032d38f9ec9e4292
-    @test _ref_query(rng, UInt64(2)) === 0x6cb5f773267910f4
-    @test _ref_query(rng, UInt64(3)) === 0x1ecdc291cdb992c7
-    @test _ref_query(rng, UInt64(4)) === 0x36f6106902720d37
+    @test _query_ref(rng, UInt64(1)) === 0x032d38f9ec9e4292
+    @test _query_ref(rng, UInt64(2)) === 0x6cb5f773267910f4
+    @test _query_ref(rng, UInt64(3)) === 0x1ecdc291cdb992c7
+    @test _query_ref(rng, UInt64(4)) === 0x36f6106902720d37
     # encode
     @test length(encode(rng)) === 64
     @test encode(rng) == encode(rng.seed)
