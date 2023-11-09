@@ -1,4 +1,4 @@
-# https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
+# https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
 struct KISS64 <: AbstractBitHash end
 
 function query(::KISS64, key::UInt64)::UInt64
