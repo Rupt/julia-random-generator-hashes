@@ -1,7 +1,7 @@
 module BitSift
 
 # Generator interface
-export AbstractHash
+export AbstractBitHash
 export query
 export encode
 # Generators
@@ -10,7 +10,7 @@ export MultiplyWithCarry
 export SplitMix
 export XorShift
 
-abstract type AbstractHash end
+abstract type AbstractBitHash end
 
 function query end
 function encode end

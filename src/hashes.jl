@@ -1,6 +1,6 @@
 # - Seminumerical Algorithms. The Art of Computer Programming. Vol. 2 (3rd ed.)
 #     3.2.1 The Linear Congruential Method
-struct Linear <: AbstractHash
+struct Linear <: AbstractBitHash
     multiplier::UInt64
     increment::UInt64
     seed::UInt64
@@ -20,7 +20,7 @@ function query(rng::Linear, key::UInt64)::UInt64
 end
 
 # https://en.wikipedia.org/wiki/Multiply-with-carry_pseudorandom_number_generator
-struct MultiplyWithCarry <: AbstractHash
+struct MultiplyWithCarry <: AbstractBitHash
     reduced_multiplier::UInt64
     seed_c::UInt64
     seed_x::UInt64
@@ -39,7 +39,7 @@ function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
 end
 
 # https://web.archive.org/web/20220617005635/https://prng.di.unimi.it/SplitMix.c
-struct SplitMix <: AbstractHash end
+struct SplitMix <: AbstractBitHash end
 
 function query(::SplitMix, key::UInt64)::UInt64
     x = key * 0x9e3779b97f4a7c15
@@ -49,7 +49,7 @@ function query(::SplitMix, key::UInt64)::UInt64
 end
 
 # https://doi.org/10.18637%2Fjss.v008.i14
-struct XorShift <: AbstractHash
+struct XorShift <: AbstractBitHash
     seed::UInt64
 end
 
