@@ -9,12 +9,12 @@ end
 
 # Linear algebra modulo 2
 
-struct BitMatrix64
+struct XorMatrix64
     columns::Vector{UInt64}
 end
 
-function bit_product(left::BitMatrix64, vector::UInt64)::UInt64  # M @ v
-    _assert_bit_matrix_64(left)
+function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # M @ v
+    _assert_xor_matrix_64(left)
     result = UInt64(0)
     for i in 0:63
         bit = (vector >> i) & 1 == 1
@@ -23,12 +23,12 @@ function bit_product(left::BitMatrix64, vector::UInt64)::UInt64  # M @ v
     return result
 end
 
-function bit_product(left::BitMatrix64, right::BitMatrix64)::BitMatrix64  # L @ R
-    _assert_bit_matrix_64(left)
-    _assert_bit_matrix_64(right)
-    return BitMatrix64([bit_product(left, column) for column in right.columns])
+function xor_product(left::XorMatrix64, right::XorMatrix64)::XorMatrix64  # L @ R
+    _assert_xor_matrix_64(left)
+    _assert_xor_matrix_64(right)
+    return XorMatrix64([xor_product(left, column) for column in right.columns])
 end
 
-function _assert_bit_matrix_64(matrix::BitMatrix64)
+function _assert_xor_matrix_64(matrix::XorMatrix64)
     @assert length(matrix.columns) == 64
 end
