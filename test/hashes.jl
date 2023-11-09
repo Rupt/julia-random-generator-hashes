@@ -109,6 +109,9 @@ end
     @test _query_ref(rng, UInt64(2)) === 0x6cb5f773267910f4
     @test _query_ref(rng, UInt64(3)) === 0x1ecdc291cdb992c7
     @test _query_ref(rng, UInt64(4)) === 0x36f6106902720d37
+    for i in UInt64.(0:8)
+        @test query(rng, i) === _query_ref(rng, i)
+    end
     # encode
     @test length(encode(rng)) === 64
     @test encode(rng) == encode(rng.seed)

@@ -14,21 +14,17 @@ struct XorMatrix64
 end
 
 function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # M @ v
-    _assert_xor_matrix_64(left)
+    @assert length(left.columns) == 64
     result = UInt64(0)
     for i in 0:63
         bit = (vector >> i) & 1 == 1
+        # We want C `result ^= bit ? col : 0;`, and branchless.
         result = xor(result, left.columns[i + 1] & -UInt64(bit))
     end
     return result
 end
 
 function xor_product(left::XorMatrix64, right::XorMatrix64)::XorMatrix64  # L @ R
-    _assert_xor_matrix_64(left)
-    _assert_xor_matrix_64(right)
+    @assert length(left.columns) == length(right.columns) == 64
     return XorMatrix64([xor_product(left, column) for column in right.columns])
-end
-
-function _assert_xor_matrix_64(matrix::XorMatrix64)
-    @assert length(matrix.columns) == 64
 end

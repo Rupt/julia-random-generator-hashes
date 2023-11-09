@@ -53,8 +53,22 @@ struct XorShift <: AbstractBitHash
     seed::UInt64
 end
 
-function query(::XorShift, key::UInt64)::UInt64
-    # TODO(Rupt): build transition matrix
-    # TODO(Rupt): matrix power operation
-    return 0
+function query(rng::XorShift, key::UInt64)::UInt64
+    x::UInt64 = rng.seed
+    left = _left_operator(rng)
+    for i in 0:63
+        x = (key >> i) & 1 == 1 ? xor_product(left, x) : x
+        left = xor_product(left, left)  # Two steps
+    end
+    return x
+end
+
+function _left_operator(::XorShift)::XorMatrix64
+    return XorMatrix64([_xorshift_kiss(UInt64(1) << i) for i in 0:63])
+end
+
+function _xorshift_kiss(x::UInt64)::UInt64
+    x = xor(x, x << 13)
+    x = xor(x, x >> 17)
+    return xor(x, x << 43)
 end
