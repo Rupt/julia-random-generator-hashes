@@ -1,3 +1,16 @@
+# Reference https://godbolt.org/z/dWYe3Yeb7 (KISS64)
+using Printf
+@testset "BitSift.KISS64" begin
+    # query
+    rng = KISS64()
+    @test query(rng, UInt64(1)) === 0x7bf856948de350b4
+    @test query(rng, UInt64(2)) === 0x4f3f0ffc2151f23b
+    @test query(rng, UInt64(3)) === 0xfe8db07360509101
+    @test query(rng, UInt64(4)) === 0xc680b96777f2d4da
+    # encode
+    @test encode(rng) == Bool[]
+end
+
 function _query_ref(rng::Linear, key::UInt64)::UInt64
     x = rng.seed
     for _ in 1:key
@@ -17,7 +30,7 @@ end
     for i in UInt64.(0:4)
         @test query(rng, i) === _query_ref(rng, UInt64(i))
     end
-    # Reference: https://godbolt.org/z/avYrzxocq (KISS64)
+    # Reference: https://godbolt.org/z/avYrzxocq (KISS64 CNG)
     kiss_cng = Linear(6906969069, 1234567, 1066149217761810)
     @test query(kiss_cng, UInt64(1)) === 0xa1f271f53fe5ff31
     @test query(kiss_cng, UInt64(2)) === 0x476be49fc6b421e4
@@ -63,7 +76,7 @@ end
     @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
     @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
     @test query(rng, UInt64(4)) === 0x99d4dc2af9055010
-    # Reference: https://godbolt.org/z/dE64vPMWb (KISS64)
+    # Reference: https://godbolt.org/z/dE64vPMWb (KISS64 MWC)
     @test _kiss_mwc_rng_ref(UInt64(1)) === 0xd6d8aba5615f0ef1
     @test _kiss_mwc_rng_ref(UInt64(2)) === 0x9b1d33e93424bf63
     @test _kiss_mwc_rng_ref(UInt64(3)) === 0x2a789697c9aa3b9f
@@ -103,7 +116,7 @@ end
 
 @testset "BitSift.XorShift" begin
     # query
-    # Reference https://godbolt.org/z/bPr3vab1s
+    # Reference https://godbolt.org/z/bPr3vab1s (KISS64 XSH)
     rng = XorShift(362436362436362436)
     @test _query_ref(rng, UInt64(1)) === 0x032d38f9ec9e4292
     @test _query_ref(rng, UInt64(2)) === 0x6cb5f773267910f4

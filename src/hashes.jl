@@ -1,3 +1,13 @@
+# https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
+struct KISS64 <: AbstractBitHash end
+
+function query(::KISS64, key::UInt64)::UInt64
+    mwc = MultiplyWithCarry(UInt64(1) << 58 + 1, 123456123456123456, 1234567890987654321)
+    xsh = XorShift(362436362436362436)
+    cng = Linear(6906969069, 1234567, 1066149217761810)
+    return query(mwc, key) + query(xsh, key) + query(cng, key)
+end
+
 # - Seminumerical Algorithms. The Art of Computer Programming. Vol. 2 (3rd ed.)
 #     3.2.1 The Linear Congruential Method
 struct Linear <: AbstractBitHash
