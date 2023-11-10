@@ -10,7 +10,7 @@ end
 # Linear algebra modulo 2
 
 struct XorMatrix64
-    columns::NTuple{64,UInt64}
+    column::NTuple{64,UInt64}
 end
 
 function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # L @ v
@@ -18,11 +18,11 @@ function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # L @ v
     for i in 0:63
         bit = (vector >> i) & 1
         # In C, we want a branchless `result ^= bit ? col : 0;`.
-        x = xor(x, left.columns[i + 1] & -bit)
+        x = xor(x, left.column[i + 1] & -bit)
     end
     return x
 end
 
 function xor_product(left::XorMatrix64, right::XorMatrix64)::XorMatrix64  # L @ R
-    return XorMatrix64(Tuple(xor_product(left, column) for column in right.columns))
+    return XorMatrix64(Tuple(xor_product(left, col) for col in right.column))
 end

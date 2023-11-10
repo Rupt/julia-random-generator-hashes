@@ -34,22 +34,22 @@ end
     end
     # M @ (1 << n) = M[n]
     for i in 0:63
-        @test xor_product(matrix, UInt64(1) << i) === matrix.columns[i + 1]
+        @test xor_product(matrix, UInt64(1) << i) === matrix.column[i + 1]
     end
     # M @ 0 = 0
     @test xor_product(matrix, zero_vector) === UInt64(0)
     # 0 @ v = 0
-    @test xor_product(zero_matrix, vector) == UInt64(0)
+    @test xor_product(zero_matrix, vector) === UInt64(0)
 
     # Matrix Matrix Product
     # 1 @ R = v
-    @test xor_product(identity, matrix).columns == matrix.columns
+    @test xor_product(identity, matrix).column == matrix.column
     # L @ 1 = L
-    @test xor_product(matrix, identity).columns == matrix.columns
+    @test xor_product(matrix, identity).column == matrix.column
     # L @ 0 = 0
-    @test xor_product(matrix, zero_matrix).columns == zero_matrix.columns
+    @test xor_product(matrix, zero_matrix).column == zero_matrix.column
     # 0 @ R = 0
-    @test xor_product(zero_matrix, matrix).columns == zero_matrix.columns
+    @test xor_product(zero_matrix, matrix).column == zero_matrix.column
 
     # Associativity
     @test xor_product(xor_product(matrix, matrix_alt), vector) ==
