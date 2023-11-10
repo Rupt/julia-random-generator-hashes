@@ -11,8 +11,8 @@ export MultiplyWithCarry
 export SplitMix
 export XorShift
 # Algebra
-export XorMatrix64
-export xor_product
+export XorMatrix
+export xor_mul
 
 abstract type AbstractBitHash end
 

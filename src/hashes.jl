@@ -67,14 +67,14 @@ function query(rng::XorShift, key::UInt64)::UInt64
     x::UInt64 = rng.seed
     left = _left_operator(rng)
     for i in 0:63
-        x = (key >> i) & 1 == 1 ? xor_product(left, x) : x
-        left = xor_product(left, left)  # Two steps
+        x = (key >> i) & 1 == 1 ? xor_mul(left, x) : x
+        left = xor_mul(left, left)  # Two steps
     end
     return x
 end
 
-function _left_operator(::XorShift)::XorMatrix64
-    return XorMatrix64(Tuple(_xorshift_kiss(UInt64(1) << i) for i in 0:63))
+function _left_operator(::XorShift)::XorMatrix
+    return XorMatrix(Tuple(_xorshift_kiss(UInt64(1) << i) for i in 0:63))
 end
 
 function _xorshift_kiss(x::UInt64)::UInt64

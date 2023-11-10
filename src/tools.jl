@@ -9,11 +9,11 @@ end
 
 # Linear algebra modulo 2
 
-struct XorMatrix64
+struct XorMatrix
     column::NTuple{64,UInt64}
 end
 
-function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # L @ v
+function xor_mul(left::XorMatrix, vector::UInt64)::UInt64  # L @ v
     x::UInt64 = 0
     for i in 0:63
         bit = (vector >> i) & 1
@@ -23,6 +23,6 @@ function xor_product(left::XorMatrix64, vector::UInt64)::UInt64  # L @ v
     return x
 end
 
-function xor_product(left::XorMatrix64, right::XorMatrix64)::XorMatrix64  # L @ R
-    return XorMatrix64(Tuple(xor_product(left, col) for col in right.column))
+function xor_mul(left::XorMatrix, right::XorMatrix)::XorMatrix  # L @ R
+    return XorMatrix(Tuple(xor_mul(left, col) for col in right.column))
 end
