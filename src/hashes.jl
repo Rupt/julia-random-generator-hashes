@@ -52,7 +52,7 @@ end
 struct SplitMix <: AbstractBitHash end
 
 function query(::SplitMix, key::UInt64)::UInt64
-    x = key * 0x9e3779b97f4a7c15
+    x::UInt64 = key * 0x9e3779b97f4a7c15
     x = xor(x, x >> 30) * 0xbf58476d1ce4e5b9
     x = xor(x, x >> 27) * 0x94d049bb133111eb
     return xor(x, x >> 31)
@@ -65,7 +65,7 @@ end
 
 function query(rng::XorShift, key::UInt64)::UInt64
     x::UInt64 = rng.seed
-    left = _left_operator(rng)
+    left::XorMatrix = _left_operator(rng)
     for i in 0:63
         x = (key >> i) & 1 == 1 ? xor_mul(left, x) : x
         left = xor_mul(left, left)  # Two steps
