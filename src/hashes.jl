@@ -1,7 +1,7 @@
 # https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
-struct KISS64 <: AbstractBitHash end
+struct KISS <: AbstractBitHash end
 
-function query(::KISS64, key::UInt64)::UInt64
+function query(::KISS, key::UInt64)::UInt64
     mwc = MultiplyWithCarry(UInt64(1) << 58 + 1, 123456123456123456, 1234567890987654321)
     xsh = XorShift(362436362436362436)
     cng = Linear(6906969069, 1234567, 1066149217761810)

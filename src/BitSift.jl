@@ -5,7 +5,7 @@ export AbstractBitHash
 export query
 export encode
 # Generators
-export KISS64
+export KISS
 export Linear
 export MultiplyWithCarry
 export SplitMix

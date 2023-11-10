@@ -1,7 +1,7 @@
-@testset "BitSift.KISS64" begin
-    rng = KISS64()
+@testset "BitSift.KISS" begin
+    rng = KISS()
 
-    # https://godbolt.org/z/dWYe3Yeb7 (KISS64)
+    # https://godbolt.org/z/dWYe3Yeb7 (KISS)
     @test query(rng, UInt64(1)) === 0x7bf856948de350b4
     @test query(rng, UInt64(2)) === 0x4f3f0ffc2151f23b
     @test query(rng, UInt64(3)) === 0xfe8db07360509101
@@ -29,7 +29,7 @@ end
     for i in UInt64.(0:4)
         @test query(rng, i) === _query_ref(rng, UInt64(i))
     end
-    # https://godbolt.org/z/avYrzxocq (KISS64 CNG)
+    # https://godbolt.org/z/avYrzxocq (KISS CNG)
     kiss_cng = Linear(6906969069, 1234567, 1066149217761810)
     @test query(kiss_cng, UInt64(1)) === 0xa1f271f53fe5ff31
     @test query(kiss_cng, UInt64(2)) === 0x476be49fc6b421e4
@@ -66,7 +66,7 @@ end
     @test query(rng, UInt64(2)) === 0x8d4afc4090e4aa85
     @test query(rng, UInt64(3)) === 0x5dcc5d9277c19e28
     @test query(rng, UInt64(4)) === 0x99d4dc2af9055010
-    # https://godbolt.org/z/dE64vPMWb (KISS64 MWC)
+    # https://godbolt.org/z/dE64vPMWb (KISS MWC)
     kiss_a1 = UInt64(1) << 58 + 1
     kiss_c::UInt64 = 123456123456123456
     kiss_x::UInt64 = 1234567890987654321
@@ -111,7 +111,7 @@ end
 @testset "BitSift.XorShift" begin
     rng = XorShift(362436362436362436)
 
-    # https://godbolt.org/z/bPr3vab1s (KISS64 XSH)
+    # https://godbolt.org/z/bPr3vab1s (KISS XSH)
     @test _query_ref(rng, UInt64(1)) === 0x032d38f9ec9e4292
     @test _query_ref(rng, UInt64(2)) === 0x6cb5f773267910f4
     @test _query_ref(rng, UInt64(3)) === 0x1ecdc291cdb992c7
