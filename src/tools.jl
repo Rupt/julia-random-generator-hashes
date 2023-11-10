@@ -1,5 +1,9 @@
-function encode(key::T)::BitVector where {T<:Integer}
-    length = sizeof(typemax(T) | typemin(T)) * 8  # Valid types must have bounds.
+_PrimitiveSigned = Union{Int8,Int16,Int32,Int64,Int128}
+_PrimitiveUnsigned = Union{UInt8,UInt16,UInt32,UInt64,UInt128}
+_PrimitiveInteger = Union{_PrimitiveSigned,_PrimitiveUnsigned}
+
+function encode(key::T)::BitVector where {T<:_PrimitiveInteger}
+    length = sizeof(T) * 8
     return BitVector((key >> i) & 1 for i in (length - 1):-1:0)
 end
 
