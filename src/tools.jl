@@ -14,10 +14,11 @@ end
 # Linear algebra modulo 2
 
 struct XorMatrix
-    column::NTuple{64,UInt64}
+    column::Vector{UInt64}
 end
 
 function xor_mul(left::XorMatrix, vector::UInt64)::UInt64  # L @ v
+    @assert length(left.column) == 64
     x::UInt64 = 0
     for i in 0:63
         bit = (vector >> i) & 1
@@ -28,5 +29,6 @@ function xor_mul(left::XorMatrix, vector::UInt64)::UInt64  # L @ v
 end
 
 function xor_mul(left::XorMatrix, right::XorMatrix)::XorMatrix  # L @ R
-    return XorMatrix(Tuple(xor_mul(left, col) for col in right.column))
+    @assert length(left.column) == length(right.column) == 64
+    return XorMatrix([xor_mul(left, col) for col in right.column])
 end

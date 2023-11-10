@@ -19,7 +19,7 @@ abstract type AbstractBitHash end
 function query end
 function encode end
 
-include("hashes.jl")
 include("tools.jl")
+include("hashes.jl")
 
 end  # module BitSift
