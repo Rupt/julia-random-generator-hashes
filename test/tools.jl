@@ -74,6 +74,7 @@ end
     b::UInt128 = 0xff057b7ef767814f14057b7ef767814f % m
     @test add_mod(a, b, m) == _add_mod_ref(a, b, m)
     @test mul_mod(a, b, m) == _mul_mod_ref(a, b, m)
+    @test mul_mod2(a, b, m) == _mul_mod_ref(a, b, m)
 
     rng = SplitMix()
     for k in 1:100
@@ -83,5 +84,6 @@ end
         b = (UInt128(query(rng, UInt64(i + 4))) << 64 | query(rng, UInt64(i + 5))) % m
         @test add_mod(a, b, m) == _add_mod_ref(a, b, m)
         @test mul_mod(a, b, m) == _mul_mod_ref(a, b, m)
+        @test mul_mod2(a, b, m) == _mul_mod_ref(a, b, m)
     end
 end

@@ -15,6 +15,7 @@ export XorMatrix
 export xor_mul
 export add_mod
 export mul_mod
+export mul_mod2  # TODO
 
 abstract type AbstractBitHash end
 

@@ -41,9 +41,9 @@ function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
     a::UInt128 = invmod(UInt128(1) << 64, m)
     x::UInt128 = (UInt128(rng.seed_c) << 64) | rng.seed_x
     for i in 0:63
-        x = (key >> i) & 1 == 1 ? mul_mod(a, x, m) : x
+        x = (key >> i) & 1 == 1 ? mul_mod2(a, x, m) : x
         # Two steps: a * ((a * x) % m) = ((a * a) % m) * x
-        a = mul_mod(a, a, m)
+        a = mul_mod2(a, a, m)
     end
     return x & typemax(UInt64)
 end

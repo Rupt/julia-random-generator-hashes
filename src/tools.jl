@@ -31,7 +31,7 @@ end
 
 # Algebra modulo m
 
-function add_mod(a::UInt128, b::UInt128, m::UInt128)::UInt128 # a < m, b < m
+@inline function add_mod(a::UInt128, b::UInt128, m::UInt128)::UInt128 # a < m, b < m
     sum = a + b
     return (sum >= m) | (sum < a) ? sum - m : sum
 end
@@ -44,4 +44,30 @@ function mul_mod(a::UInt128, b::UInt128, m::UInt128)::UInt128  # a < m, b < m
         scale = add_mod(scale, scale, m)
     end
     return x
+end
+
+function mul_mod2(a::UInt128, b::UInt128, m::UInt128)::UInt128  # a < m, b < m
+    # a = (c * 2^64) + d
+    # b = (e * 2^64) + f
+    # =>
+    # (a * b) % m
+    # = (c * e * 2^128 + (c * f + d * e) * 2^64 + d * f) % m
+    c = a >> 64
+    d = a & 0xffffffffffffffff
+    e = b >> 64
+    f = b & 0xffffffffffffffff
+
+    m0 = (UInt128(1) << 127) % m
+    m1 = add_mod(m0, m0, m)
+    m2 = (UInt128(1) << 64) % m
+
+    p1 = mul_mod(c, e, m)
+    p2 = mul_mod(c, f, m)
+    p3 = mul_mod(d, e, m)
+    p4 = mul_mod(d, f, m)
+    p5 = add_mod(p2, p3, m)
+    p6 = mul_mod(p1, m1, m)
+    p7 = mul_mod(p5, m2, m)
+    p8 = add_mod(p6, p7, m)
+    return add_mod(p4, p8, m)
 end
