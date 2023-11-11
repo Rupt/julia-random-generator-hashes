@@ -3,7 +3,7 @@ _PrimitiveUnsigned = Union{UInt8,UInt16,UInt32,UInt64,UInt128}
 _PrimitiveInteger = Union{_PrimitiveSigned,_PrimitiveUnsigned}
 
 function encode(item::T)::Vector{UInt8} where {T<:_PrimitiveInteger}
-    return reinterpret(UInt8, [hton(item)])
+    return [UInt8((item >> i) & 0xff) for i in (sizeof(T) * 8 - 8):-8:0]
 end
 
 function encode(item::T)::Vector{UInt8} where {T<:AbstractBitHash}
@@ -11,7 +11,7 @@ function encode(item::T)::Vector{UInt8} where {T<:AbstractBitHash}
 end
 
 function bitcode(byte::UInt8)::BitVector
-    return BitVector((byte >> i) & 1 == 1 for i in 7:-1:0)
+    return @. byte & 1 << (7:-1:0) != 0
 end
 
 function bitcode(bytes::Vector{UInt8})::BitVector
