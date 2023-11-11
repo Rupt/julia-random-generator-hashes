@@ -4,6 +4,7 @@ module BitSift
 export AbstractBitHash
 export query
 export encode
+export bitcode
 # Generators
 export KISS
 export Linear

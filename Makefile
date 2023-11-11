@@ -13,3 +13,5 @@ bench:
 	julia -- bench/mwc.jl
 	julia -- bench/splitmix.jl
 	julia -- bench/xsh.jl
+	julia -- bench/encode.jl
+	julia -- bench/bitcode.jl

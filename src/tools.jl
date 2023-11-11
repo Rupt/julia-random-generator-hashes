@@ -2,13 +2,20 @@ _PrimitiveSigned = Union{Int8,Int16,Int32,Int64,Int128}
 _PrimitiveUnsigned = Union{UInt8,UInt16,UInt32,UInt64,UInt128}
 _PrimitiveInteger = Union{_PrimitiveSigned,_PrimitiveUnsigned}
 
-function encode(key::T)::BitVector where {T<:_PrimitiveInteger}
-    length = sizeof(T) * 8
-    return BitVector((key >> i) & 1 for i in (length - 1):-1:0)
+function encode(item::T)::Vector{UInt8} where {T<:_PrimitiveInteger}
+    return reinterpret(UInt8, [hton(item)])
 end
 
-function encode(item::T)::BitVector where {T<:AbstractBitHash}
+function encode(item::T)::Vector{UInt8} where {T<:AbstractBitHash}
     return cat((encode(getfield(item, field)) for field in fieldnames(T))...; dims=1)
+end
+
+function bitcode(byte::UInt8)::BitVector
+    return BitVector((byte >> i) & 1 == 1 for i in 7:-1:0)
+end
+
+function bitcode(bytes::Vector{UInt8})::BitVector
+    return cat((bitcode(byte) for byte in bytes)...; dims=1)
 end
 
 # Linear algebra modulo 2
