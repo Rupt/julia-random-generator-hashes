@@ -18,10 +18,10 @@ end
 end
 
 @testset "BitSift.xor_mul" begin
-    identity = XorMatrix([UInt64(1) << i for i in 0:63])
-    matrix = XorMatrix([query(SplitMix(), i) for i in UInt64.(1:64)])
-    matrix_alt = XorMatrix([query(SplitMix(), i) for i in UInt64.(1001:1064)])
-    zero_matrix = XorMatrix(zeros(UInt64, 64))
+    identity = XorMatrix(Tuple(UInt64(1) << i for i in 0:63))
+    matrix = XorMatrix(Tuple(query(SplitMix(), i) for i in UInt64.(1:64)))
+    matrix_alt = XorMatrix(Tuple(query(SplitMix(), i) for i in UInt64.(1001:1064)))
+    zero_matrix = XorMatrix(Tuple(zeros(UInt64, 64)))
     zero_vector = UInt64(0)
     vector = query(SplitMix(), UInt64(1789))
     vector_alt = query(SplitMix(), UInt64(2023))
