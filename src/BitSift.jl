@@ -13,8 +13,6 @@ export XorShift
 # Algebra
 export XorMatrix
 export xor_mul
-export add_mod
-export mul_mod
 
 abstract type AbstractBitHash end
 

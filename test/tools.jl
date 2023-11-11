@@ -59,29 +59,3 @@ end
     @test xor_mul(matrix, xor(vector, vector_alt)) ==
         xor(xor_mul(matrix, vector), xor_mul(matrix, vector_alt))
 end
-
-function _add_mod_ref(a::UInt128, b::UInt128, m::UInt128)::UInt128
-    return (BigInt(a) + BigInt(b)) % BigInt(m)
-end
-
-function _mul_mod_ref(a::UInt128, b::UInt128, m::UInt128)::UInt128
-    return (BigInt(a) * BigInt(b)) % BigInt(m)
-end
-
-@testset "Modular arithmetic" begin
-    m::UInt128 = 0xff992ddfa23249d62b992ddfa23249d5
-    a::UInt128 = 0x5851f42d4c957f2d5851f42d4c957f2d % m
-    b::UInt128 = 0xff057b7ef767814f14057b7ef767814f % m
-    @test add_mod(a, b, m) == _add_mod_ref(a, b, m)
-    @test mul_mod(a, b, m) == _mul_mod_ref(a, b, m)
-
-    rng = SplitMix()
-    for k in 1:100
-        i = k * 6
-        m = UInt128(query(rng, UInt64(i))) << 64 | query(rng, UInt64(i + 1))
-        a = (UInt128(query(rng, UInt64(i + 2))) << 64 | query(rng, UInt64(i + 3))) % m
-        b = (UInt128(query(rng, UInt64(i + 4))) << 64 | query(rng, UInt64(i + 5))) % m
-        @test add_mod(a, b, m) == _add_mod_ref(a, b, m)
-        @test mul_mod(a, b, m) == _mul_mod_ref(a, b, m)
-    end
-end

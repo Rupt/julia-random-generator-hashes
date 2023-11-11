@@ -28,20 +28,3 @@ end
 function xor_mul(left::XorMatrix, right::XorMatrix)::XorMatrix  # L @ R
     return XorMatrix(Tuple(xor_mul(left, col) for col in right.column))
 end
-
-# Algebra modulo m
-
-function add_mod(a::UInt128, b::UInt128, m::UInt128)::UInt128 # a < m, b < m
-    sum = a + b
-    return (sum >= m) | (sum < a) ? sum - m : sum
-end
-
-function mul_mod(a::UInt128, b::UInt128, m::UInt128)::UInt128  # a < m, b < m
-    x::UInt128 = 0
-    scale::UInt128 = b
-    for i in 0:127
-        x = (a >> i) & 1 == 1 ? add_mod(x, scale, m) : x
-        scale = add_mod(scale, scale, m)
-    end
-    return x
-end
