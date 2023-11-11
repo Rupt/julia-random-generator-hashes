@@ -55,6 +55,18 @@ function _kiss_mwc_ref(key::UInt64)::UInt64
     return x
 end
 
+function _query_ref(rng::MultiplyWithCarry, key::UInt64)::UInt64
+    m::BigInt = (BigInt(rng.reduced_multiplier) << 64) - 1
+    a::BigInt = invmod(BigInt(1) << 64, m)
+    x::BigInt = (BigInt(rng.seed_c) << 64) | rng.seed_x
+    for i in 0:63
+        x = (key >> i) & 1 == 1 ? (a * x) % m : x
+        # Two steps: a * ((a * x) % m) = ((a * a) % m) * x
+        a = (a * a) % m
+    end
+    return x & typemax(UInt64)
+end
+
 @testset "BitSift.MultiplyWithCarry" begin
     mwc_a1::UInt64 = 0xffebb71d94fcdaf9
     seed_c::UInt64 = 1
@@ -76,7 +88,7 @@ end
     @test query(kiss_mwc, UInt64(3)) === 0x2a789697c9aa3b9f
     @test query(kiss_mwc, UInt64(4)) === 0xa8e50b676e7ace9d
     for i in UInt64.(0:8)
-        @test query(kiss_mwc, i) === _kiss_mwc_ref(i)
+        @test query(kiss_mwc, i) === _query_ref(kiss_mwc, i) === _kiss_mwc_ref(i)
     end
 
     code = encode(rng)
