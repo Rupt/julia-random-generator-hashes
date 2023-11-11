@@ -20,9 +20,7 @@ end
 function xor_mul(left::XorMatrix, vector::UInt64)::UInt64  # L @ v
     x::UInt64 = 0
     for i in 0:63
-        bit = (vector >> i) & 1
-        # In C, we want a branchless `result ^= bit ? col : 0;`.
-        x = xor(x, left.column[i + 1] & -bit)
+        x = (vector >> i) & 1 == 1 ? xor(x, left.column[i + 1]) : x
     end
     return x
 end
