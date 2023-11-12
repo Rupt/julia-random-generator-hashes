@@ -22,6 +22,6 @@ function bytes end
 function bits end
 
 include("tools.jl")
-include("hashes.jl")
+include("mixes.jl")
 
 end  # module BitSift
