@@ -2,6 +2,6 @@ using BenchmarkTools
 using BitSift
 
 key = 0x8ee32211fc720d27
-encoding = encode(key)
+encoding = bytes(key)
 
-@btime bitcode(encoding)
+@btime bits(encoding)

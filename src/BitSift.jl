@@ -1,10 +1,10 @@
 module BitSift
 
 # Generator interface
-export AbstractBitHash
+export AbstractBitMix
 export query
-export encode
-export bitcode
+export bytes
+export bits
 # Generators
 export KISS
 export Linear
@@ -15,10 +15,11 @@ export XorShift
 export XorMatrix
 export xor_mul
 
-abstract type AbstractBitHash end
+abstract type AbstractBitMix end
 
 function query end
-function encode end
+function bytes end
+function bits end
 
 include("tools.jl")
 include("hashes.jl")

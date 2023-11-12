@@ -1,5 +1,5 @@
 # https://web.archive.org/web/20221206094913/https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/
-struct KISS <: AbstractBitHash end
+struct KISS <: AbstractBitMix end
 
 function query(::KISS, key::UInt64)::UInt64
     mwc = MultiplyWithCarry(UInt64(1) << 58 + 1, 123456123456123456, 1234567890987654321)
@@ -10,7 +10,7 @@ end
 
 # - Seminumerical Algorithms. The Art of Computer Programming. Vol. 2 (3rd ed.)
 #     3.2.1 The Linear Congruential Method
-struct Linear <: AbstractBitHash
+struct Linear <: AbstractBitMix
     multiplier::UInt64
     increment::UInt64
     seed::UInt64
@@ -30,7 +30,7 @@ function query(rng::Linear, key::UInt64)::UInt64
 end
 
 # https://en.wikipedia.org/wiki/Multiply-with-carry_pseudorandom_number_generator
-struct MultiplyWithCarry <: AbstractBitHash
+struct MultiplyWithCarry <: AbstractBitMix
     reduced_multiplier::UInt64
     seed_c::UInt64
     seed_x::UInt64
@@ -50,7 +50,7 @@ function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
 end
 
 # https://web.archive.org/web/20220617005635/https://prng.di.unimi.it/SplitMix.c
-struct SplitMix <: AbstractBitHash end
+struct SplitMix <: AbstractBitMix end
 
 function query(::SplitMix, key::UInt64)::UInt64
     x::UInt64 = key * 0x9e3779b97f4a7c15
@@ -60,7 +60,7 @@ function query(::SplitMix, key::UInt64)::UInt64
 end
 
 # https://doi.org/10.18637%2Fjss.v008.i14
-struct XorShift <: AbstractBitHash
+struct XorShift <: AbstractBitMix
     seed::UInt64
 end
 
