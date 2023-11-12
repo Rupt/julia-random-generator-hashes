@@ -11,12 +11,10 @@ function bytes(item::AbstractBitMix)::Vector{UInt8}
     return cat((bytes(getfield(item, name)) for name in names)...; dims=1)
 end
 
-function bits(byte::UInt8)::BitVector
-    return byte .& (1 .<< (7:-1:0)) .!= 0
-end
-
 function bits(bytes::Vector{UInt8})::BitVector
-    return cat(bits.(bytes)...; dims=1)
+    mask::Vector{UInt8} = 1 .<< (7:-1:0)
+    product::Array{UInt8,2} = mask .& reshape(bytes, 1, :)  # (8, length)
+    return reshape(product, :) .!= 0
 end
 
 # Linear algebra modulo 2
