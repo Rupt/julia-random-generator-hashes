@@ -79,9 +79,8 @@ function _xor_shift_kiss(x::UInt64)::UInt64
 end
 
 const _XOR_SHIFT_LEFT::NTuple{64,XorMatrix} = let
-    left = XorMatrix(Tuple(_xor_shift_kiss(UInt64(1) << i) for i in 0:63))
     operators = Vector{XorMatrix}(undef, 64)
-    operators[1] = left
+    operators[1] = left = XorMatrix(Tuple(_xor_shift_kiss.(UInt64(1) .<< (0:63))))
     for i in 2:64
         operators[i] = left = xor_mul(left, left)  # Two steps
     end
