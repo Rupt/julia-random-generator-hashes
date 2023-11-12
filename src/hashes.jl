@@ -37,6 +37,7 @@ struct MultiplyWithCarry <: AbstractBitHash
 end
 
 function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
+    # FIXME(#2) Avoid using BigInt, or otherwise improve performance
     m::BigInt = (BigInt(rng.reduced_multiplier) << 64) - 1
     a::BigInt = invmod(BigInt(1) << 64, m)
     x::BigInt = (BigInt(rng.seed_c) << 64) | rng.seed_x
@@ -79,10 +80,10 @@ end
 
 const _XOR_SHIFT_LEFT::NTuple{64,XorMatrix} = let
     left = XorMatrix(Tuple(_xor_shift_kiss(UInt64(1) << i) for i in 0:63))
-    operators = [left]
+    operators = Vector{XorMatrix}(undef, 64)
+    operators[1] = left
     for i in 2:64
-        left = xor_mul(left, left)  # Two steps
-        push!(operators, left)
+        operators[i] = left = xor_mul(left, left)  # Two steps
     end
     Tuple(operators)
 end
