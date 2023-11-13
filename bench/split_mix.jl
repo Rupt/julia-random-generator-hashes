@@ -11,7 +11,7 @@ end
 @btime query(rng, key)
 
 # WIP: Is auto vectorization efficient?
-keys = [query(SplitMix(), i) for i in UInt64.(1:10_000)]
+keys = [query(SplitMix(), i) for i in UInt64.(1:1000)]
 
 function bench(keys)
     return [query(rng, key) for key in keys]
