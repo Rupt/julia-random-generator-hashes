@@ -24,4 +24,8 @@ function bits end
 include("tools.jl")
 include("mixes.jl")
 
+function query(rng::AbstractBitMix, keys::Vector{UInt64})::Vector{UInt64}
+    return (key -> query(rng, key)).(keys)
+end
+
 end  # module BitSift
