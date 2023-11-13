@@ -12,6 +12,6 @@ bench:
 	julia -- bench/bits.jl
 	julia -- bench/kiss.jl
 	julia -- bench/linear.jl
-	julia -- bench/mwc.jl
-	julia -- bench/splitmix.jl
-	julia -- bench/xsh.jl
+	julia -- bench/multiply_with_carry.jl
+	julia -- bench/split_mix.jl
+	julia -- bench/xor_shift.jl
