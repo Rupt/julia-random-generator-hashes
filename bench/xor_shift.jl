@@ -1,7 +1,7 @@
 using BenchmarkTools
 using BitSift
 
-rng = XorShift(362436362436362436)
+const rng = XorShift(362436362436362436)
 
 key = 0x8ee32211fc720d27
 for _ in 1:100  # warmup
