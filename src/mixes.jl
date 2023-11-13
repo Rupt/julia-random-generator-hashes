@@ -65,9 +65,21 @@ struct XorShift <: AbstractBitMix
 end
 
 function query(rng::XorShift, key::UInt64)::UInt64
-    x::UInt64 = rng.seed
+    lut::NTuple{64,XorMatrix} = let
+        operators = Vector{XorMatrix}(undef, 64)
+        operators[1] = left = XorMatrix(Tuple(_xor_shift_kiss.(UInt64(1) .<< (0:63))))
+        for i in 2:64
+            operators[i] = left = xor_mul(left, left)  # Two steps
+        end
+        Tuple(operators)
+    end
+    return _xor_shift_query_impl(lut, rng.seed, key)
+end
+
+function _xor_shift_query_impl(lut::NTuple{64,XorMatrix}, seed::UInt64, key::UInt64)::UInt64
+    x::UInt64 = seed
     for i in 0:63
-        x = (key >> i) & 1 == 1 ? xor_mul(_XOR_SHIFT_LEFT[i + 1], x) : x
+        x = (key >> i) & 1 == 1 ? xor_mul(lut[i + 1], x) : x
     end
     return x
 end
