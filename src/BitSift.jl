@@ -3,8 +3,6 @@ module BitSift
 # Generator interface
 export AbstractBitMix
 export query
-export bytes
-export bits
 # Generators
 export KISS
 export Linear
@@ -18,8 +16,6 @@ export xor_mul
 abstract type AbstractBitMix end
 
 function query end
-function bytes end
-function bits end
 
 include("tools.jl")
 include("mixes.jl")

@@ -6,8 +6,6 @@
     @test query(rng, UInt64(2)) === 0x4f3f0ffc2151f23b
     @test query(rng, UInt64(3)) === 0xfe8db07360509101
     @test query(rng, UInt64(4)) === 0xc680b96777f2d4da
-
-    @test bits(bytes(rng)) == Bool[]
 end
 
 function _query_ref(rng::Linear, key::UInt64)::UInt64
@@ -35,12 +33,6 @@ end
     @test query(kiss_cng, UInt64(2)) === 0x476be49fc6b421e4
     @test query(kiss_cng, UInt64(3)) === 0xb5475749c8ecc29b
     @test query(kiss_cng, UInt64(4)) === 0xe6a59d970705f906
-
-    code = bits(bytes(rng))
-    @test length(code) === 192
-    @test code[1:64] == bits(bytes(multiplier))
-    @test code[65:128] == bits(bytes(increment))
-    @test code[129:192] == bits(bytes(seed))
 end
 
 function _kiss_mwc_ref(key::UInt64)::UInt64
@@ -78,12 +70,6 @@ end
     for i in UInt64.(0:8)
         @test query(kiss_mwc, i) === _kiss_mwc_ref(i)
     end
-
-    code = bits(bytes(rng))
-    @test length(code) === 192
-    @test code[1:64] == bits(bytes(mwc_a1))
-    @test code[65:128] == bits(bytes(seed_c))
-    @test code[129:192] == bits(bytes(seed_x))
 end
 
 @testset "BitSift.SplitMix" begin
@@ -94,8 +80,6 @@ end
     @test query(rng, UInt64(2)) === 0x6e789e6aa1b965f4
     @test query(rng, UInt64(3)) === 0x06c45d188009454f
     @test query(rng, UInt64(4)) === 0xf88bb8a8724c81ec
-
-    @test bits(bytes(rng)) == Bool[]
 end
 
 function _query_ref(rng::XorShift, key::UInt64)::UInt64
@@ -119,7 +103,4 @@ end
     for i in UInt64.(0:8)
         @test query(rng, i) === _query_ref(rng, i)
     end
-
-    @test length(bits(bytes(rng))) === 64
-    @test bytes(rng) == bytes(rng.seed)
 end

@@ -8,8 +8,6 @@ test:
 
 .PHONY: bench
 bench:
-	julia -- bench/bytes.jl
-	julia -- bench/bits.jl
 	julia -- bench/kiss.jl
 	julia -- bench/linear.jl
 	julia -- bench/multiply_with_carry.jl
