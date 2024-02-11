@@ -28,9 +28,4 @@ function query(rng::AbstractBitMix, keys::Array{UInt64})::Array{UInt64}
     return (key -> query(rng, key)).(keys)
 end
 
-# TODO: vectorize bits and bytes carefully to preserve dimensions, if feasible
-function bytes(keys::Array{UInt64})  # TODO return type
-    return bytes.(keys)
-end
-
 end  # module BitSift

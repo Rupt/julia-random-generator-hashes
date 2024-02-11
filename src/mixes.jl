@@ -37,7 +37,8 @@ struct MultiplyWithCarry <: AbstractBitMix
 end
 
 function query(rng::MultiplyWithCarry, key::UInt64)::UInt64
-    # FIXME(#2) Avoid using BigInt, or otherwise improve performance
+    # Not that we have bounded length, so could reduce allocations by replacing
+    # BigInt with some 128-to-256-bit multiply-modulo function.
     m::BigInt = (BigInt(rng.reduced_multiplier) << 64) - 1
     a::BigInt = invmod(BigInt(1) << 64, m)
     x::BigInt = (BigInt(rng.seed_c) << 64) | rng.seed_x

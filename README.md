@@ -12,6 +12,13 @@ This repository implements N-th item functions for a few 64-bit generators:
 - [KISS64](https://www.thecodingforums.com/threads/64-bit-kiss-rngs.673657/)  (sum of the above)
 - [SplitMix64](https://prng.di.unimi.it/SplitMix.c)
 
+## Usage
+
+- Add this local package through the Julia CLI with `julia > ] > add .`.
+- Run the automated checks with `make test`.
+- Run some basic timing measurements with `make bench`.
+  This needs `BenchmarkTools`, installed for example with `julia > ] > add BenchmarkTools`.
+
 ## Historical note
 
 I originally planned this project to:
