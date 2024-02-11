@@ -1,4 +1,4 @@
-# Random sequences? Nah, just integer hash functions
+# Random sequences? Nah, just hash functions
 
 Random number generators produce deterministic sequences. That's useful.
 It can also be useful to jump straight to the N-th item in the sequence.
