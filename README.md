@@ -36,6 +36,7 @@ In performing Item 2, I learned that there are better tools for achieving point 
 so I conclude this project with just the N-th item functions.
 Of course this "better" word is meaningless.
 Concretely, I mean that there are language ecosystems that offer
+non-global namespaces without textual include directives,
 faster compilation,
 faster execution (with or without compilation),
 stronger semantic guarantees (with regards to typing and immutability),
